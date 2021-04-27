@@ -43,3 +43,27 @@ def print_data(figure, data, graph_title, graph_position):
 def insulin_to_carb_ratio(daily_insulin_units, daily_carbs_intake):
     result = daily_carbs_intake / daily_insulin_units
     return result
+
+def total_insulin(basal_data, insulin_needed, eat_time):
+    y = []
+    for i in range(0, len(basal_data)):
+        if i == eat_time:
+            insulin = basal_data[i] + insulin_needed
+            y.append(insulin)
+        else:
+            y.append(basal_data[i])
+    return y
+
+glucose_data = get_glucose_data(FIRST_GLUCOSE_READING, cycles)
+# print(glucose_data)
+
+glucose_data_delta = get_glucose_data_delta(glucose_data, cycles)
+# print(glucose_data_delta)
+
+insulin_sensitivity = get_insulin_sensitivity(daily_insulin_units)
+# print(insulin_sensitivity)
+
+basal_data = get_basal_data(glucose_data_delta, cycles)
+# print(basal_data)
+
+ratio = insulin_to_carb_ratio(daily_insulin_units, daily_carbs_intake)
