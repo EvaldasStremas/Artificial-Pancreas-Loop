@@ -1,6 +1,6 @@
 import random
 import matplotlib.pyplot as plt
-from inputs import FIRST_GLUCOSE_READING, cycles, daily_insulin_units
+from inputs import FIRST_GLUCOSE_READING, cycles, daily_insulin_units, daily_carbs_intake
 
 def get_glucose_data(first_glucose_value, cycles):
     y = []
@@ -31,3 +31,15 @@ def get_basal_data(glucose_data, cycles):
         basal = glucose_data[i] * get_insulin_sensitivity(daily_insulin_units)
         y.append(basal)
     return y
+
+def print_data(figure, data, graph_title, graph_position):
+    x = range(0, len(data))
+    y = data
+
+    ax1 = figure.add_subplot(graph_position)
+    ax1.plot(x, y)
+    ax1.set_title(graph_title)
+
+def insulin_to_carb_ratio(daily_insulin_units, daily_carbs_intake):
+    result = daily_carbs_intake / daily_insulin_units
+    return result

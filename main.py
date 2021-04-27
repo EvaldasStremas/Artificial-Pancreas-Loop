@@ -1,7 +1,13 @@
 import random
 import matplotlib.pyplot as plt
-from inputs import FIRST_GLUCOSE_READING, cycles, daily_insulin_units
-from functions import get_glucose_data, get_glucose_data_delta, get_insulin_sensitivity, get_basal_data
+from inputs import FIRST_GLUCOSE_READING, cycles, daily_insulin_units, daily_carbs_intake
+from functions import get_glucose_data, get_glucose_data_delta, get_insulin_sensitivity, get_basal_data, print_data, insulin_to_carb_ratio
+
+def total_insulin(data, time, basal_data, insulin_needed, cycles):
+    for i in range(cycles):
+        if time == i:
+            total_insulin_amount = basal_data[i] + insulin_needed
+    return total_insulin_amount
 
 glucose_data = get_glucose_data(FIRST_GLUCOSE_READING, cycles)
 # print(glucose_data)
@@ -15,37 +21,21 @@ insulin_sensitivity = get_insulin_sensitivity(daily_insulin_units)
 basal_data = get_basal_data(glucose_data_delta, cycles)
 # print(basal_data)
 
+# ratio = insulin_to_carb_ratio(daily_insulin_units, daily_carbs_intake)
 
-def print_glucose(first_glucose_value):
-    x = range(0, len(glucose_data))
-    y = glucose_data
+# moment_carbs_intake = int(input("How many carbs do you eating?:  "))
+# insulin_needed = moment_carbs_intake / ratio
+# print("You need this amount insulin:  ", insulin_needed)
+# time = int(input("When you gonna eat?:  "))
+# print(time)
 
-    ax1 = fig.add_subplot(221)
-    ax1.plot(x, y)
-    ax1.set_title('Glucose data')
-
-
-def print_glucose_delta(glucose_data):
-    x = range(0, len(glucose_data))
-    y = glucose_data
-
-    ax2 = fig.add_subplot(222)
-    ax2.plot(x, y)
-    ax2.set_title('Delta glucose data')
-
-
-def print_basal(glucose_data):
-    x = range(0, len(glucose_data))
-    y = glucose_data
-
-    ax3 = fig.add_subplot(223)
-    ax3.plot(x, y)
-    ax3.set_title('Basal insulin units')
-
+# ti = total_insulin(basal_data, time, basal_data, insulin_needed, cycles)
+# print(ti)
+# print(basal_data)
 
 # Print graphs
 fig = plt.figure()
-print_glucose(glucose_data)
-print_glucose_delta(glucose_data_delta)
-print_basal(basal_data)
+print_data(fig, glucose_data, "Glucose data", 221)
+print_data(fig, glucose_data_delta, "Delta glucose data", 222)
+print_data(fig, basal_data, "Basal insulin units", 223)
 plt.show()
