@@ -52,27 +52,3 @@ def total_insulin(basal_data, insulin_needed, eat_time):
     bolus_and_basal_insulin_data = basal_data
     bolus_and_basal_insulin_data[eat_time] += insulin_needed
     return bolus_and_basal_insulin_data
-
-def glucose_data():
-    glucose_data = get_glucose_data(FIRST_GLUCOSE_READING, cycles)
-    return glucose_data
-
-def glucose_data_delta(glucose_data):
-    glucose_data_delta = get_glucose_data_delta(glucose_data)
-    return glucose_data_delta
-
-def basal_data(glucose_data):
-    basal_data = get_basal_data(glucose_data)
-    return basal_data
-
-def ratio():
-    ratio = insulin_to_carb_ratio(daily_insulin_units, daily_carbs_intake)
-    return ratio
-
-def insulin_needed(moment_carbs_intake, ratio):
-    insulin_needed = moment_carbs_intake / ratio
-    return insulin_needed
-
-def total_insulin_data(moment_carbs_intake, eat_time):
-    total_insulin_data = total_insulin(basal_data(glucose_data_delta(glucose_data())), insulin_needed(moment_carbs_intake, ratio()), eat_time)
-    return total_insulin_data
