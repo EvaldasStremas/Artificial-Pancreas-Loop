@@ -1,6 +1,6 @@
 import random
 import matplotlib.pyplot as plt
-from inputs import FIRST_GLUCOSE_READING, cycles, daily_insulin_units, daily_carbs_intake
+from inputs import *
 
 def get_glucose_data(first_glucose_value, cycles):
     y = []
@@ -10,10 +10,10 @@ def get_glucose_data(first_glucose_value, cycles):
         first_glucose_value += (random.choice((-1, 1)) * random.uniform(0, 0.5))
     return y
 
-def get_glucose_data_delta(glucose_data, cycles):
+def get_glucose_data_delta(glucose_data):
     y = []
 
-    for i in range(cycles):
+    for i in range(len(glucose_data)):
         glucose_delta = glucose_data[i] - glucose_data[i-1]
         if glucose_delta < 0:
             glucose_delta = 0
@@ -24,10 +24,10 @@ def get_insulin_sensitivity(daily_insulin_units):
     insulin_sensitivity = 100 / daily_insulin_units
     return insulin_sensitivity
 
-def get_basal_data(glucose_data, cycles):
+def get_basal_data(glucose_data):
     y = []
 
-    for i in range(cycles):
+    for i in range(len(glucose_data)):
         basal = glucose_data[i] * get_insulin_sensitivity(daily_insulin_units)
         y.append(basal)
     return y
@@ -40,6 +40,39 @@ def print_data(figure, data, graph_title, graph_position):
     ax1.plot(x, y)
     ax1.set_title(graph_title)
 
+def insulin_sensitivity():
+    insulin_sensitivity = get_insulin_sensitivity(daily_insulin_units)
+    return insulin_sensitivity
+
 def insulin_to_carb_ratio(daily_insulin_units, daily_carbs_intake):
     result = daily_carbs_intake / daily_insulin_units
     return result
+
+def total_insulin(basal_data, insulin_needed, eat_time):
+    bolus_and_basal_insulin_data = basal_data
+    bolus_and_basal_insulin_data[eat_time] += insulin_needed
+    return bolus_and_basal_insulin_data
+
+def glucose_data():
+    glucose_data = get_glucose_data(FIRST_GLUCOSE_READING, cycles)
+    return glucose_data
+
+def glucose_data_delta(glucose_data):
+    glucose_data_delta = get_glucose_data_delta(glucose_data)
+    return glucose_data_delta
+
+def basal_data(glucose_data):
+    basal_data = get_basal_data(glucose_data)
+    return basal_data
+
+def ratio():
+    ratio = insulin_to_carb_ratio(daily_insulin_units, daily_carbs_intake)
+    return ratio
+
+def insulin_needed(moment_carbs_intake, ratio):
+    insulin_needed = moment_carbs_intake / ratio
+    return insulin_needed
+
+def total_insulin_data(moment_carbs_intake, eat_time):
+    total_insulin_data = total_insulin(basal_data(glucose_data_delta(glucose_data())), insulin_needed(moment_carbs_intake, ratio()), eat_time)
+    return total_insulin_data
