@@ -2,7 +2,7 @@ import random
 import matplotlib.pyplot as plt
 from inputs import *
 from functions import *
-# from user_input import *
+from user_input import *
 
 moment_carbs_intake = int(input("How many carbs do you eating?:  "))
 eat_time = int(input("When you gonna eat?:  "))
